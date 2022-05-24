@@ -1,10 +1,9 @@
 import React from 'react'
-import { Provider/* , useSelector  */} from 'react-redux'
+import { Provider /* , useSelector  */ } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route, /* Redirect, */ StaticRouter } from 'react-router-dom'
 
 import store, { history } from '../redux'
-
 
 import Start from '../components/Start'
 import NotFound from '../components/404'
@@ -50,9 +49,9 @@ const RootComponent = (props) => {
         <Startup>
           <Switch>
             <Route exact path="/" component={Start} />
-            <Route component={NotFound} />
-
             <Route exact path="/:category" component={Category} />
+
+            <Route component={NotFound} />
           </Switch>
         </Startup>
       </RouterSelector>

@@ -7,6 +7,7 @@ import React from 'react'
 
 import cookieParser from 'cookie-parser'
 import shortid from 'shortid'
+/* import { fs } from 'fs' */
 import { readFile, writeFile } from 'fs/promises'
 import config from './config'
 import Html from '../client/html'
@@ -121,15 +122,16 @@ server.get('/api/v1/tasks/:category/:timespan', async (req, res) => {
   res.json(listOfCategoryFiltered)
 })
 
-server.patch('/api/v1/tasks/:category/:id', async (req, res) => {
-  const { category, id } = req.params
+server.patch('/api/v1/tasks/:category', async (req, res) => {
+  const { category } = req.params
   const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
-      res.json({ error: 'File was not found' })
+      /* res.json({ error: 'File was not found' }) */
+        return []
     })
-  const arrayWithoutId = listOfCategory.filter((obj) => obj.taskId !== id)
-  const chanchesTask = listOfCategory.find((obj) => obj.taskId === id)
+  const arrayWithoutId = listOfCategory.filter((obj) => obj.taskId !== req.body.id)
+  const chanchesTask = listOfCategory.find((obj) => obj.taskId === req.body.id)
   const statuses = ['done', 'new', 'in progress', 'blocked']
   if (statuses.some((status) => req.body.status === status)) {
     const chanchesTaskUpdate = { ...chanchesTask, status: req.body.status }
@@ -137,10 +139,10 @@ server.patch('/api/v1/tasks/:category/:id', async (req, res) => {
     await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
       encoding: 'utf8'
     })
-    res.json(listOfCategoryUpdated)
+    /* console.log(chanchesTaskUpdate) */
+    return res.json(listOfCategoryUpdated)
   }
-  res.status(501)
-  res.json({ status: 'error', message: 'incorrect status' })
+  return res.status(501).json({ message: 'incorrect status' })
 })
 
 server.delete('/api/v1/tasks/:category/:id', async (req, res) => {
@@ -161,7 +163,9 @@ server.delete('/api/v1/tasks/:category/:id', async (req, res) => {
 })
 
 /* server.get('/api/v1/categories', async (req, res) => {
-
+  const file = await fs.readdirSync(`${__dirname}`)
+  console.log(file)
+  res.json(file)
 }) */
 
 server.use('/api/', (req, res) => {
