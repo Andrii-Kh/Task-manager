@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Input from './Input'
 import EditProfile from './EditProfile'
+import Filter from './Filter'
 
 const Category = () => {
   const { category } = useParams()
@@ -51,7 +52,10 @@ const Category = () => {
         category={category}
         setTaskList={setTaskList}
       />
-      <div className="flex justify-center items-center">
+      <div>
+        <Filter category={category} setTaskList={setTaskList} />
+      </div>
+      <div>
         <Input category={category} setTaskList={setTaskList} />
       </div>
 
