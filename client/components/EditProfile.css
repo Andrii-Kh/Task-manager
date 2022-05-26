@@ -1,0 +1,36 @@
+
+
+.edit {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.editcontent {
+    transform: scale(0.5);
+    transition: 0.4s all;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 30%;
+    height: 30%;
+    border-radius: 40px
+}
+
+.editcontent.active {
+    transform: scale(1);
+}

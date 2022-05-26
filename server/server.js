@@ -64,13 +64,13 @@ server.post('/api/v1/tasks/:category', async (req, res) => {
     title: req.body.title,
     status: 'new',
     _isDeleted: false,
-    _createdAt: +new Date() - 604800000,
+    _createdAt: +new Date(),
     _deletedAt: null
   }
   await writeFile(`${__dirname}/${category}.json`, JSON.stringify([...listOfCategory, newTask]), {
     encoding: 'utf8'
   })
-  res.json({ status: `File ${category}.json was updated` })
+  res.json([...listOfCategory, newTask])
 })
 
 server.get('/api/v1/tasks/:category', async (req, res) => {
@@ -122,13 +122,12 @@ server.get('/api/v1/tasks/:category/:timespan', async (req, res) => {
   res.json(listOfCategoryFiltered)
 })
 
-server.patch('/api/v1/tasks/:category', async (req, res) => {
+/* server.patch('/api/v1/tasks/:category', async (req, res) => {
   const { category } = req.params
   const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
-      /* res.json({ error: 'File was not found' }) */
-        return []
+      return []
     })
   const arrayWithoutId = listOfCategory.filter((obj) => obj.taskId !== req.body.id)
   const chanchesTask = listOfCategory.find((obj) => obj.taskId === req.body.id)
@@ -139,7 +138,39 @@ server.patch('/api/v1/tasks/:category', async (req, res) => {
     await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
       encoding: 'utf8'
     })
-    /* console.log(chanchesTaskUpdate) */
+   return res.json(listOfCategoryUpdated)
+  }
+  return res.status(501).json({ message: 'incorrect status' })
+}) */
+
+server.patch('/api/v1/tasks/:category', async (req, res) => {
+  const { category } = req.params
+  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch(() => {
+      /* res.json({ error: 'File was not found' }) */
+      return []
+    })
+  const arrayWithoutId = listOfCategory.filter((obj) => obj.taskId !== req.body.id)
+  const chanchesTask = listOfCategory.find((obj) => obj.taskId === req.body.id)
+  const statuses = ['done', 'new', 'in progress', 'blocked']
+  if (req.body.status) {
+    if (statuses.some((status) => req.body.status === status)) {
+      const chanchesTaskUpdate = { ...chanchesTask, status: req.body.status }
+      const listOfCategoryUpdated = [...arrayWithoutId, chanchesTaskUpdate]
+      await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
+        encoding: 'utf8'
+      })
+      return res.json(listOfCategoryUpdated)
+    }
+    return res.status(501).json({ message: 'incorrect status' })
+  }
+  if (req.body.title) {
+    const chanchesTaskUpdate = { ...chanchesTask, title: req.body.title }
+    const listOfCategoryUpdated = [...arrayWithoutId, chanchesTaskUpdate]
+    await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
+      encoding: 'utf8'
+    })
     return res.json(listOfCategoryUpdated)
   }
   return res.status(501).json({ message: 'incorrect status' })
