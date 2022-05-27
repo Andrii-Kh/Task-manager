@@ -26,7 +26,7 @@ const addTask = async () => {
         onChange={onChange}
         value={value}
       />
-      <button className="ml-4 bg-green-300 rounded-full w-20" type="button" onClick={addTask}>
+      <button className="ml-4 bg-green-300 rounded-full w-20" type="button" onClick={() => {addTask(); setValue('')}}>
         add task
       </button>
     </div>

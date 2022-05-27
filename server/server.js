@@ -9,8 +9,10 @@ import cookieParser from 'cookie-parser'
 import shortid from 'shortid'
 /* import { fs } from 'fs' */
 import { readFile, writeFile } from 'fs/promises'
+import { readdirSync } from 'fs'
 import config from './config'
 import Html from '../client/html'
+
 
 require('colors')
 
@@ -39,11 +41,11 @@ middleware.forEach((it) => server.use(it))
 
 server.post('/api/v1/tasks/:category', async (req, res) => {
   const { category } = req.params
-  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+  const listOfCategory = await readFile(`${__dirname}/tasks/${category}.json`, { encoding: 'utf8' })
     .then((oldList) => JSON.parse(oldList))
     .catch(async () => {
       await writeFile(
-        `${__dirname}/${category}.json`,
+        `${__dirname}/tasks/${category}.json`,
         JSON.stringify([
           {
             taskId: shortid.generate(),
@@ -67,15 +69,44 @@ server.post('/api/v1/tasks/:category', async (req, res) => {
     _createdAt: +new Date(),
     _deletedAt: null
   }
-  await writeFile(`${__dirname}/${category}.json`, JSON.stringify([...listOfCategory, newTask]), {
+  await writeFile(
+    `${__dirname}/tasks/${category}.json`,
+    JSON.stringify([...listOfCategory, newTask]),
+    {
+      encoding: 'utf8'
+    }
+  )
+  res.json([...listOfCategory, newTask])
+})
+
+server.post('/api/v2/tasks', async (req, res) => {
+  const listOfCategory = await readFile(`${__dirname}/tasks/${req.body.category}.json`, {
     encoding: 'utf8'
   })
-  res.json([...listOfCategory, newTask])
+    .then((oldList) => JSON.parse(oldList))
+    .catch(async () => {
+      await writeFile(
+        `${__dirname}/tasks/${req.body.category}.json`,
+        JSON.stringify([
+          /* {
+            taskId: shortid.generate(),
+            title: null,
+            status: 'new',
+            _isDeleted: true,
+            _createdAt: +new Date(),
+            _deletedAt: null
+          } */
+        ]),
+        { encoding: 'utf8' }
+      )
+      res.json(listOfCategory)
+    })
+  res.json(listOfCategory)
 })
 
 server.get('/api/v1/tasks/:category', async (req, res) => {
   const { category } = req.params
-  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+  const listOfCategory = await readFile(`${__dirname}/tasks/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
       res.json({ error: 'File was not found' })
@@ -101,7 +132,7 @@ server.get('/api/v1/tasks/:category', async (req, res) => {
 server.get('/api/v1/tasks/:category/:timespan', async (req, res) => {
   const data = +new Date()
   const { category, timespan } = req.params
-  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+  const listOfCategory = await readFile(`${__dirname}/tasks/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
       res.json({ error: 'File was not found' })
@@ -145,7 +176,7 @@ server.get('/api/v1/tasks/:category/:timespan', async (req, res) => {
 
 server.patch('/api/v1/tasks/:category', async (req, res) => {
   const { category } = req.params
-  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+  const listOfCategory = await readFile(`${__dirname}/tasks/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
       /* res.json({ error: 'File was not found' }) */
@@ -158,9 +189,13 @@ server.patch('/api/v1/tasks/:category', async (req, res) => {
     if (statuses.some((status) => req.body.status === status)) {
       const chanchesTaskUpdate = { ...chanchesTask, status: req.body.status }
       const listOfCategoryUpdated = [...arrayWithoutId, chanchesTaskUpdate]
-      await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
-        encoding: 'utf8'
-      })
+      await writeFile(
+        `${__dirname}/tasks/${category}.json`,
+        JSON.stringify(listOfCategoryUpdated),
+        {
+          encoding: 'utf8'
+        }
+      )
       return res.json(listOfCategoryUpdated)
     }
     return res.status(501).json({ message: 'incorrect status' })
@@ -168,7 +203,7 @@ server.patch('/api/v1/tasks/:category', async (req, res) => {
   if (req.body.title) {
     const chanchesTaskUpdate = { ...chanchesTask, title: req.body.title }
     const listOfCategoryUpdated = [...arrayWithoutId, chanchesTaskUpdate]
-    await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
+    await writeFile(`${__dirname}/tasks/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
       encoding: 'utf8'
     })
     return res.json(listOfCategoryUpdated)
@@ -178,7 +213,7 @@ server.patch('/api/v1/tasks/:category', async (req, res) => {
 
 server.delete('/api/v1/tasks/:category/:id', async (req, res) => {
   const { category, id } = req.params
-  const listOfCategory = await readFile(`${__dirname}/${category}.json`, { encoding: 'utf8' })
+  const listOfCategory = await readFile(`${__dirname}/tasks/${category}.json`, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch(() => {
       res.json({ error: 'File was not found' })
@@ -187,17 +222,16 @@ server.delete('/api/v1/tasks/:category/:id', async (req, res) => {
   const chanchesTask = listOfCategory.find((obj) => obj.taskId === id)
   const chanchesTaskUpdate = { ...chanchesTask, _isDeleted: true }
   const listOfCategoryUpdated = [...arrayWithoutId, chanchesTaskUpdate]
-  await writeFile(`${__dirname}/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
+  await writeFile(`${__dirname}/tasks/${category}.json`, JSON.stringify(listOfCategoryUpdated), {
     encoding: 'utf8'
   })
   res.json(listOfCategoryUpdated)
 })
 
-/* server.get('/api/v1/categories', async (req, res) => {
-  const file = await fs.readdirSync(`${__dirname}`)
-  console.log(file)
+server.get('/api/v1/categories', (req, res) => {
+  const file = readdirSync(`${__dirname}/tasks`).map((it) => it.replace(/\..+$/, ''))
   res.json(file)
-}) */
+})
 
 server.use('/api/', (req, res) => {
   res.status(404)

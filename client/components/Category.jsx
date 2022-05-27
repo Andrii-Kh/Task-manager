@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Input from './Input'
 import EditProfile from './EditProfile'
 import Filter from './Filter'
@@ -52,6 +52,13 @@ const Category = () => {
         category={category}
         setTaskList={setTaskList}
       />
+      <div className="flex justify-center items-center">
+        <div className="text-xl">The chosen category:</div>
+        <div className="ml-4">{category}</div>
+      </div>
+      <div className="text-center text-green-700">
+        <Link to="/">Go back</Link>
+      </div>
       <div>
         <Filter category={category} setTaskList={setTaskList} />
       </div>

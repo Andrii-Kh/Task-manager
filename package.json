@@ -160,6 +160,7 @@
             "server/work.json",
             "server/doing.json",
             "server/learning.json",
+            "server/do3.json",
             "server/tasks/*"
         ]
     }

@@ -5,11 +5,13 @@ import { Switch, Route, /* Redirect, */ StaticRouter } from 'react-router-dom'
 
 import store, { history } from '../redux'
 
-import Start from '../components/Start'
+/* import Start from '../components/Start' */
+import StartV2 from '../components/StartV2'
 import NotFound from '../components/404'
 
 import Startup from './startup'
 import Category from '../components/Category'
+
 
 /* const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.auth.user)
@@ -48,7 +50,8 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route exact path="/" component={Start} />
+            {/* <Route exact path="/" component={Start} /> */}
+            <Route exact path="/" component={StartV2} />
             <Route exact path="/:category" component={Category} />
 
             <Route component={NotFound} />

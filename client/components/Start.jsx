@@ -8,21 +8,23 @@ const Start = () => {
   }
 
   return (
-    <div>
+    <div className='flex justify-center p-10'>
       <input
         className="border solid border-2 border-black rounded"
         type="text"
         onChange={onChange}
         value={category}
       />
-      {/* <Link
+      <div className="border border-blue-700 bg-blue-200 w-19 rounded-full mx-4">
+        <Link className='mx-4'
         to={`/${category}`}
-        className="border solid border-2 border-blue-700 rounded bg-blue-200"
       >
         Go to
-      </Link> */}
+      </Link>
+      </div>
 
-      <Link to='/work'>Work</Link>
+
+      {/* <Link to='/work'>Work</Link> */}
     </div>
   )
 }
