@@ -13,7 +13,6 @@ import { readdirSync } from 'fs'
 import config from './config'
 import Html from '../client/html'
 
-
 require('colors')
 
 let Root

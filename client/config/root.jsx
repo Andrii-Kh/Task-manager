@@ -12,7 +12,6 @@ import NotFound from '../components/404'
 import Startup from './startup'
 import Category from '../components/Category'
 
-
 /* const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.auth.user)
   const token = useSelector((state) => state.token)

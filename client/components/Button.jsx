@@ -1,4 +1,4 @@
-                                                /* СТАРЫЙ ВАРИАНТ */
+/* СТАРЫЙ ВАРИАНТ */
 /* import axios from 'axios'
 import React from 'react'
 

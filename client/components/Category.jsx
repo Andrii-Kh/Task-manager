@@ -42,7 +42,7 @@ const Category = () => {
   }
 
   return (
-    <div className="bg-yellow-200">
+    <div className="bg-slate-100 h-screen">
       <EditProfile
         edit={edit}
         setEdit={setEdit}
@@ -53,11 +53,15 @@ const Category = () => {
         setTaskList={setTaskList}
       />
       <div className="flex justify-center items-center">
-        <div className="text-xl">The chosen category:</div>
+        <div className="text-xl">Category:</div>
         <div className="ml-4">{category}</div>
       </div>
-      <div className="text-center text-green-700">
-        <Link to="/">Go back</Link>
+      <div className="flex justify-center pt-2">
+        <div className=" bg-blue-300 border rounded-full w-24">
+          <Link to="/" className="px-4 ">
+            Go back
+          </Link>
+        </div>
       </div>
       <div>
         <Filter category={category} setTaskList={setTaskList} />
@@ -68,9 +72,9 @@ const Category = () => {
 
       {taskList.map((task, index) => {
         return (
-          <div key={index} className="my-4 border-b p-2.5 w-full bg-green-300">
-            <div className="flex justify-between bg-blue-300">
-              <div className="ml-4 text-lg bg-red-300">
+          <div key={index} className="my-4 border-b-2 p-2.5 w-full">
+            <div className="flex justify-between">
+              <div className="ml-4 text-lg">
                 {index + 1}. {task.title}
               </div>
               <div className="flex">

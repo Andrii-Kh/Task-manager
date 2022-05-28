@@ -15,7 +15,7 @@ const TaskCategoryList = () => {
       </div>
       {category.map((it, index) => {
         return (
-          <div key={index} className="flex justify-center text-blue-600">
+          <div key={index} className="flex justify-center text-blue-700">
             <div>
               <Link to={`/${it}`}>{it}</Link>
             </div>

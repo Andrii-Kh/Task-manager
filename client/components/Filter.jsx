@@ -1,20 +1,20 @@
-import axios from "axios";
-import React from "react";
+import axios from 'axios'
+import React from 'react'
 
 const Filter = (props) => {
-
   const all = Infinity
   const day = 1000 * 60 * 60 * 24
   const week = day * 7
   const month = day * 30
 
   const taskFilter = (timespan) => {
-    axios(`http://localhost:8090/api/v1/tasks/${props.category}/${timespan}`)
-    .then((result) => props.setTaskList(result.data))
+    axios(`http://localhost:8090/api/v1/tasks/${props.category}/${timespan}`).then((result) =>
+      props.setTaskList(result.data)
+    )
   }
   return (
     <div>
-      <div className="flex justify-center pt-3 bg-slate-200">
+      <div className="flex justify-center pt-3">
         <button
           type="button"
           className="bg-orange-300 rounded-full w-20"

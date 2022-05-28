@@ -3,7 +3,6 @@ import axios from 'axios'
 import './EditProfile.css'
 
 const EditProfile = (props) => {
-
   const onChange = (e) => {
     props.setTaskTitle(e.target.value)
   }
@@ -27,10 +26,7 @@ const EditProfile = (props) => {
           onChange={onChange}
           value={props.taskTitle}
         />
-        <button
-          type="button"
-          onClick={onClick}
-        >
+        <button type="button" onClick={onClick}>
           save
         </button>
         <button type="button" onClick={() => props.setEdit(false)}>

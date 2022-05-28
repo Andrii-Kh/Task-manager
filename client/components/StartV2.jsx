@@ -21,7 +21,7 @@ const StartV2 = () => {
   }
 
   return (
-    <div>
+    <div className="bg-slate-100 h-screen">
       <div className="flex justify-center p-10">
         <input
           className="solid border-2 border-black rounded"
@@ -29,18 +29,17 @@ const StartV2 = () => {
           onChange={onChange}
           value={category}
         />
-        <div className="border-blue-700 bg-blue-200 w-19 rounded-full mx-4">
+        <div className="bg-blue-200 w-19 rounded-full mx-4">
           <Link to={`/${category}`}>
-            <button type="button" className="mx-4" onClick={createCategory}>
+            <button type="button" className="mx-4 font-bold" onClick={createCategory}>
               Create task category
             </button>
           </Link>
         </div>
-
       </div>
       <div>
-          <TaskCategoryList />
-        </div>
+        <TaskCategoryList />
+      </div>
     </div>
   )
 }
