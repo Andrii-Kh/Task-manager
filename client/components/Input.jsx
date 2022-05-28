@@ -9,7 +9,7 @@ const Input = (props) => {
   }
 
   const addTask = async () => {
-    await axios(`http://localhost:8090/api/v1/tasks/${props.category}`, {
+    await axios(`/api/v1/tasks/${props.category}`, {
       method: 'POST',
       'Content-Type': 'application/json',
       data: {

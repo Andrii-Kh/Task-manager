@@ -8,7 +8,7 @@ const EditProfile = (props) => {
   }
 
   const onClick = () => {
-    axios(`http://localhost:8090/api/v1/tasks/${props.category}`, {
+    axios(`/api/v1/tasks/${props.category}`, {
       method: 'PATCH',
       'Content-Type': 'application/json',
       data: {

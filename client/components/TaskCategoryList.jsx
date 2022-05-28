@@ -6,7 +6,7 @@ const TaskCategoryList = () => {
   const [category, setCategory] = useState([])
 
   useEffect(() => {
-    axios(`http://localhost:8090/api/v1/categories`).then((result) => setCategory(result.data))
+    axios(`api/v1/categories`).then((result) => setCategory(result.data))
   }, [])
   return (
     <div>

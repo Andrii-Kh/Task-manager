@@ -8,7 +8,7 @@ const Filter = (props) => {
   const month = day * 30
 
   const taskFilter = (timespan) => {
-    axios(`http://localhost:8090/api/v1/tasks/${props.category}/${timespan}`).then((result) =>
+    axios(`/api/v1/tasks/${props.category}/${timespan}`).then((result) =>
       props.setTaskList(result.data)
     )
   }

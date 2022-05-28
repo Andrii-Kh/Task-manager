@@ -16,7 +16,7 @@ const Category = () => {
 
   const [taskTitle, setTaskTitle] = useState('')
 
-  const url = `http://localhost:8090/api/v1/tasks/${category}`
+  const url = `/api/v1/tasks/${category}`
 
   useEffect(() => {
     axios(url).then((list) => {
@@ -29,7 +29,7 @@ const Category = () => {
   const done = 'done'
 
   const editStatus = (taskId, taskStatus) => {
-    axios(`http://localhost:8090/api/v1/tasks/${category}`, {
+    axios(`/api/v1/tasks/${category}`, {
       method: 'PATCH',
       'Content-Type': 'application/json',
       data: {

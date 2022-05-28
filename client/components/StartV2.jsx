@@ -11,7 +11,7 @@ const StartV2 = () => {
   }
 
   const createCategory = () => {
-    axios(`http://localhost:8090/api/v2/tasks`, {
+    axios(`/api/v2/tasks`, {
       method: 'POST',
       'Content-Type': 'application/json',
       data: {
